@@ -2,11 +2,13 @@ import { useState } from "react";
 import {
   Button,
   FlatList,
+  StatusBar,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
+  ScrollView,
 } from "react-native";
 
 export default function App() {
@@ -65,25 +67,14 @@ export default function App() {
       </View>
 
       <View style={styles.taskContainer}>
-        {allTasks.map((elm) => (
-          <View
-            key={elm.id}
-            style={{
-              flex: 1,
-              justifyContent: "space-evenly",
-              flexDirection: "row",
-              alignItems: "center",
-              // height: 20,
-              maxHeight: 70,
-              borderWidth: 1,
-              marginTop: 10,
-              paddingHorizontal: 10,
-            }}
-          >
-            <Text>{elm.task}</Text>
-            <Button title="Delete" onPress={() => deleteFunc(elm.id)} />
-          </View>
-        ))}
+        <ScrollView>
+          {allTasks.map((elm) => (
+            <View key={elm.id} style={styles.taskView}>
+              <Text>{elm.task}</Text>
+              <Button title="Delete" onPress={() => deleteFunc(elm.id)} />
+            </View>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
@@ -92,8 +83,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 55,
-    paddingHorizontal: 13,
+    paddingTop: StatusBar.currentHeight,
   },
   inputContainer: {
     flex: 1,
@@ -119,5 +109,18 @@ const styles = StyleSheet.create({
   taskContainer: {
     flex: 7,
     padding: 10,
+  },
+
+  taskView: {
+    flex: 1,
+    marginTop: 10,
+    paddingHorizontal: 10,
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    alignItems: "center",
+    minHeight: 70,
+    borderWidth: 1,
+    borderColor: "#cccccc",
+    borderRadius: 8,
   },
 });
