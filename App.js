@@ -67,14 +67,23 @@ export default function App() {
       </View>
 
       <View style={styles.taskContainer}>
-        <ScrollView>
-          {allTasks.map((elm) => (
-            <View key={elm.id} style={styles.taskView}>
-              <Text>{elm.task}</Text>
-              <Button title="Delete" onPress={() => deleteFunc(elm.id)} />
-            </View>
-          ))}
-        </ScrollView>
+        <FlatList
+          data={allTasks}
+          keyExtractor={(item, index) => {
+            return item.id;
+          }}
+          renderItem={(itemData) => {
+            return (
+              <View style={styles.taskView}>
+                <Text>{itemData.item.task}</Text>
+                <Button
+                  title="Delete"
+                  onPress={() => deleteFunc(itemData.item.id)}
+                />
+              </View>
+            );
+          }}
+        />
       </View>
     </View>
   );
