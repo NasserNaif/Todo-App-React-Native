@@ -1,70 +1,66 @@
 import { useState } from "react";
 import {
-  Button,
   FlatList,
   StatusBar,
-  Pressable,
   StyleSheet,
-  Text,
-  TextInput,
   View,
-  ScrollView,
+  Pressable,
+  Text,
 } from "react-native";
 
-export default function App() {
-  const [newTask, setNewTask] = useState("");
-  const [allTasks, setAllTasks] = useState([]);
+import TaskCard from "./components/TaskCard";
+import TaskInput from "./components/TaskInput";
+import Icon from "react-native-vector-icons/AntDesign";
 
-  function textChange(text) {
-    setNewTask(text);
+export default function App() {
+  const [allTasks, setAllTasks] = useState([]);
+  const [modaIsVisible, setModalIsVisible] = useState(false);
+
+  function startAddTaskHanler() {
+    setModalIsVisible(true);
   }
 
-  function addingNewTask() {
-    const item = {
-      id: Math.floor(Math.random() * 1000),
-      task: newTask,
-    };
+  function cancelAddTaskHandler() {
+    setModalIsVisible(false);
+  }
 
-    setAllTasks((oldItem) => [...oldItem, item]);
-    setNewTask("");
+  function addingNewTask(newTask) {
+    setAllTasks((oldItem) => [
+      ...oldItem,
+      { id: Math.floor(Math.random() * 1000), task: newTask },
+    ]);
+    cancelAddTaskHandler();
   }
 
   function deleteFunc(id) {
-    const newArr = allTasks.filter((elmID) => {
-      if (elmID.id !== id) return elmID;
+    setAllTasks((prev) => {
+      return prev.filter((task) => task.id !== id);
     });
-    setAllTasks(newArr);
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.inputSt}
-          placeholder="Enter your name"
-          value={newTask}
-          onChangeText={textChange}
-        />
-        <Pressable
-          onPress={addingNewTask}
+      <Pressable
+        android_ripple={{ color: "#dddddd" }}
+        style={styles.addButton}
+        onPress={startAddTaskHanler}
+      >
+        <Text
           style={{
-            padding: 10,
-            backgroundColor: "#00a6fb",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 10,
+            color: "white",
+            fontSize: 20,
           }}
         >
-          <Text
-            style={{
-              color: "white",
-              fontSize: 16,
-            }}
-          >
-            Click me
-          </Text>
-        </Pressable>
-      </View>
+          New Task <Icon name="edit" size={20} />
+        </Text>
+      </Pressable>
+
+      {/* Task Input Component  */}
+      <TaskInput
+        visible={modaIsVisible}
+        onCancel={cancelAddTaskHandler}
+        addNewTask={addingNewTask}
+      />
 
       <View style={styles.taskContainer}>
         <FlatList
@@ -74,13 +70,11 @@ export default function App() {
           }}
           renderItem={(itemData) => {
             return (
-              <View style={styles.taskView}>
-                <Text>{itemData.item.task}</Text>
-                <Button
-                  title="Delete"
-                  onPress={() => deleteFunc(itemData.item.id)}
-                />
-              </View>
+              <TaskCard
+                Text={itemData.item.task}
+                id={itemData.item.id}
+                onDeleteItem={deleteFunc}
+              />
             );
           }}
         />
@@ -92,44 +86,20 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
-  },
-  inputContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    height: 70,
-    padding: 5,
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-
-  inputSt: {
-    color: "black",
-    width: "60%",
-    borderWidth: 1,
-    borderColor: "#cccccc",
-    padding: 5,
-    borderRadius: 10,
+    width: "100%",
+    paddingTop: StatusBar.currentHeight || 20,
   },
 
   taskContainer: {
     flex: 7,
     padding: 10,
   },
-
-  taskView: {
-    flex: 1,
+  addButton: {
+    padding: 10,
     marginTop: 10,
-    paddingHorizontal: 10,
-    justifyContent: "space-evenly",
-    flexDirection: "row",
+    backgroundColor: "#00a6fb",
     alignItems: "center",
-    minHeight: 70,
-    borderWidth: 1,
-    borderColor: "#cccccc",
-    borderRadius: 8,
+    justifyContent: "center",
+    borderRadius: 10,
   },
 });
