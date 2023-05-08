@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    paddingTop: StatusBar.currentHeight || 20,
+    paddingTop: StatusBar.currentHeight || 25,
   },
 
   taskContainer: {
