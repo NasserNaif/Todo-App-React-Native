@@ -6,6 +6,7 @@ import {
   View,
   Pressable,
   Text,
+  SafeAreaView,
 } from "react-native";
 
 import TaskCard from "./components/TaskCard";
@@ -39,10 +40,12 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Pressable
         android_ripple={{ color: "#dddddd" }}
-        style={styles.addButton}
+        style={({ pressed }) =>
+          pressed ? [styles.addButton, styles.press] : styles.addButton
+        }
         onPress={startAddTaskHanler}
       >
         <Text
@@ -79,7 +82,7 @@ export default function App() {
           }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -101,5 +104,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,
+  },
+  press: {
+    opacity: 0.7,
   },
 });

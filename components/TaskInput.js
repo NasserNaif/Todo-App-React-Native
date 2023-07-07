@@ -21,11 +21,11 @@ function TaskInput(props) {
   }
 
   return (
-    <Modal visible={props.visible} animationType={"slide"}>
+    <Modal visible={props.visible} animationType={"slide"} transparent>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.inputSt}
-          placeholder="Enter your name"
+          placeholder="Enter your task"
           value={newTask}
           onChangeText={textChange}
         />
@@ -33,7 +33,9 @@ function TaskInput(props) {
           <Pressable
             android_ripple={{ color: "#dddddd" }}
             onPress={addNewTaskHandler}
-            style={styles.addButton}
+            style={({ pressed }) =>
+              pressed ? [styles.addButton, styles.press] : styles.addButton
+            }
           >
             <Text
               style={{
@@ -47,7 +49,9 @@ function TaskInput(props) {
           <Pressable
             android_ripple={{ color: "#dddddd" }}
             onPress={() => props.onCancel()}
-            style={styles.addButton}
+            style={({ pressed }) =>
+              pressed ? [styles.addButton, styles.press] : styles.addButton
+            }
           >
             <Text
               style={{
@@ -69,11 +73,13 @@ export default TaskInput;
 const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
     height: 70,
     padding: 14,
+    marginTop: 300,
     backgroundColor: "#bfdbf7",
+    borderRadius: 40,
   },
 
   inputSt: {
@@ -92,6 +98,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,
+  },
+  press: {
+    opacity: 0.7,
   },
 
   buttonContauner: {
