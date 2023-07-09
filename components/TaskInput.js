@@ -22,6 +22,10 @@ function TaskInput(props) {
 
   return (
     <Modal visible={props.visible} animationType={"slide"} transparent>
+      <Pressable
+        onPress={() => props.onCancel()}
+        style={styles.pressableStyle}
+      />
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.inputSt}
@@ -77,9 +81,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 70,
     padding: 14,
-    marginTop: 300,
+    // marginTop: 300,
     backgroundColor: "#bfdbf7",
-    borderRadius: 40,
+    borderTopEndRadius: 30,
+    borderTopLeftRadius: 30,
+  },
+
+  pressableStyle: {
+    height: 300,
+    opacity: 0.1,
   },
 
   inputSt: {
