@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    minHeight: 70,
+    minHeight: 100,
     borderWidth: 0.3,
     borderRightWidth: 20,
     borderRightColor: "#bfdbf7",
